@@ -1,3 +1,5 @@
+import * as bootstrap from "bootstrap";
+import css from "./style.scss";
 import { MatkulHomework } from "./script/matkul.config.js";
 import { promiseData } from "./script/setData.js";
 import { perubahanData } from "./script/perubahanData.js";
