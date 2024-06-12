@@ -4,3 +4,14 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.gambar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .gambar-dewe {
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+  }
+}

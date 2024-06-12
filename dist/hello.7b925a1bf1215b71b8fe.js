@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmatkul_project=self.webpackChunkmatkul_project||[]).push([[753],{594:(e,l,o)=>{var p=o(543),s=o.n(p);console.log(s().toUpper("Hello, World!"))}},e=>{e(e.s=594)}]);

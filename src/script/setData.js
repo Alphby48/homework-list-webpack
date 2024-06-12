@@ -1,7 +1,8 @@
 import { matkulH } from "../route.js";
 import { saveStorage } from "./localStorage.js";
+import _ from "lodash";
 export function promiseData(valIn) {
-  console.log(valIn);
+  console.log(_.toUpper(valIn));
   return new Promise((resolve, reject) => {
     if (!valIn) {
       resolve(addData());
