@@ -1,0 +1,485 @@
+cara menggunakan webpack
+
+1. tambahkan webpack
+	| npm init -y
+
+2. hapus ("main": "index.js") dan ganti("private": true)
+
+3. tambah di script nya
+	"scripts": {
+    		"build": "webpack"
+  	},
+
+4. instal webpacknya di terminal
+	| npm install webpack webpack-cli --save-dev
+
+5. lalu jalankan npm nya
+	| npm run build
+
+6. buat file webpack.config.js . lalu tambahkan konfigurasi
+	| const path = require("path");
+
+	  module.exports = {
+  	  mode: "development",
+  	  entry: "./src/route.js",
+ 	  output: {
+    	  path: path.resolve(__dirname, "dist"),
+   	  filename: "bundle.js",
+  	   },
+	  };
+
+7. lalu biar gak build terus terusan kita bikin build otomatis kita tambahkan (watch: true,) dalam module konfignya
+	| const path = require("path");
+
+	  module.exports = {
+  	  mode: "development",
+  	  entry: "./src/route.js",
+ 	  output: {
+    	  path: path.resolve(__dirname, "dist"),
+   	  filename: "bundle.js",
+  	   },
+	  watch: true,
+	  };
+
+8. biar file bundle.js nya mudah di baca saat mode development kita tambahkan (deftool: false)
+	| const path = require("path");
+
+	  module.exports = {
+  	  mode: "development",
+  	  entry: "./src/route.js",
+ 	  output: {
+    	  path: path.resolve(__dirname, "dist"),
+   	  filename: "bundle.js",
+  	   },
+	  watch: true,
+	  deftool: false,
+	  };
+
+9. jika kita menggunakan css tambahkan css namun file cssnya di panggil di output javascriptnya
+	| import css from "./style.css";
+
+10. lalu instal css-loader nya di terminal
+	| npm i css-loader -D
+
+11. lalu tambahkan konfigurasinya di webpack.config.js. dibawah deftool nya
+	|module: {
+	   rules: [
+	     {
+	       test: /\.css$/i,
+	       use: ["style-loader", "css-loader"],
+	     },
+	   ],
+	 },
+
+12. lalu tambahkan style loader
+	npm install --save-dev style-loader
+
+13. lalu instal babel-loader biar support web browser lama
+	npm install -D babel-loader @babel/core @babel/preset-env
+
+14. lalu tambahkan kofigurasinya di webpack config di dalam rules nya
+	{
+	     test: /\.m?js$/,
+	     exclude: /(node_modules|bower_components)/,
+	     use: {
+	       loader: 'babel-loader',
+	       options: {
+	         presets: ['@babel/preset-env']
+	       }
+	     }
+	   }
+
+15. lalu lakukan save dan bulid
+
+16.jika menggunkan file scss install
+	npm install sass-loader sass --save-dev
+
+17. tambahkan konfigurasinya webpack di bagian dalam rules
+	 {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          "style-loader",
+          // Translates CSS into CommonJS
+          "css-loader",
+          // Compiles Sass to CSS
+          "sass-loader",
+        ],
+      },
+
+18. lalu hapus konfigurasinya yang bagian css-loader yang pertama kita tambahkan 
+	dan bentuk keseluruhan seperti ini
+
+	rules: [
+      {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+          },
+        },
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          "style-loader",
+          // Translates CSS into CommonJS
+          "css-loader",
+          // Compiles Sass to CSS
+          "sass-loader",
+        ],
+      },
+    ],
+
+19. lalu jika menggunakan bootstrap dan ingin di bundle juga instal juga
+	npm install bootstrap --save-dev
+
+20. lalu import bootstrapnya di scss nya atau css
+	@import "bootstrap/scss/bootstrap";
+
+21. tambahkan juga importnya di route.js atau javascript utama
+	import * as bootstrap from "bootstrap";
+22. hapus juga link cdn di dalam html nya
+
+23. juga kita instal htmlwebpackplugin
+	npm install --save-dev html-webpack-plugin
+
+24. tambahkan di konfignya variabel ini
+	const HtmlWebpackPlugin = require('html-webpack-plugin');
+	
+25. tambahkan di onfignya di dalam module.export
+	plugins: [
+	   new HtmlWebpackPlugin({
+	     template: "./src/index.html",
+	   }),
+	 ],
+
+26. pada output ganti menjadi 
+	output: {
+	   path: path.resolve(__dirname, "dist"),
+	   filename: "bundle.[contenthash].js",
+	   clean: true,
+	 },
+	
+
+27. jangan lupa hapus file script di htmlnya
+
+28. KITA BUAT CONFIGNYA SENDIRI SENDIRI buat file webpack.dev.js dan webpack.prod.js
+
+29. set pada webpack.config.js nya seperti ini
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
+
+module.exports = {
+  entry: "./src/route.js",
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+    }),
+  ],
+  watch: true,
+  devtool: false,
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+          },
+        },
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          "style-loader",
+          // Translates CSS into CommonJS
+          "css-loader",
+          // Compiles Sass to CSS
+          "sass-loader",
+        ],
+      },
+    ],
+  },
+};
+
+
+30. dan set pada webpack.dev.js
+const path = require("path");
+
+module.exports = {
+  mode: "development",
+
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
+    clean: true,
+  },
+};
+
+
+31. dan set pada webpack.prod.js
+const path = require("path");
+
+module.exports = {
+  mode: "production",
+
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.[contenthash].js",
+    clean: true,
+  },
+};
+
+
+32. lalu untuk menggabungkan ketiga tsb kita butuh merge
+	npm install webpack-merge --save-dev
+
+33. lalu pada development set
+
+const path = require("path");
+const config = require("./webpack.config");
+const { merge } = require("webpack-merge");
+
+module.exports = merge(config, {
+  mode: "development",
+
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
+    clean: true,
+  },
+});
+
+34. set pada production
+
+const path = require("path");
+const config = require("./webpack.config");
+const { merge } = require("webpack-merge");
+
+module.exports = merge(config, {
+  mode: "production",
+
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.[contenthash].js",
+    clean: true,
+  },
+  s,
+});
+
+35. setelah tu pada package.json di line script buat seperti ini
+"scripts": {
+    "dev": "webpack --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
+  },
+
+36. agar cssna tersendiri dan terpisah dari budle nya javascript kita lakukan instal css extrak plugin
+	npm install --save-dev mini-css-extract-plugin
+
+37. lalu buka webpack.config nya tambahkan variabel ini JUGA TAMBAHKAN DI SEMUA WEBPACK
+	const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+38. ubah set di productionnya
+const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const config = require("./webpack.config");
+const { merge } = require("webpack-merge");
+module.exports = merge(config, {
+  mode: "production",
+
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.[contenthash].js",
+    clean: true,
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "main.[contenthash].css",
+    }),
+  ],
+});
+
+
+
+39. juga di development
+const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const config = require("./webpack.config");
+const { merge } = require("webpack-merge");
+
+module.exports = merge(config, {
+  mode: "development",
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
+    clean: true,
+  },
+  watch: true,
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "main.css",
+    }),
+  ],
+});
+
+
+40.dan juga di dalam webpack.config.js dalam rules didalam use nya ganti 
+	use: [
+          
+          MiniCssExtractPlugin.loader,
+          
+          "css-loader",
+          
+          "sass-loader",
+        ],
+41. instal live server
+	npm install --save-dev webpack-dev-server
+
+42. lalu tambahkan setingan ini di mode development dalam module.export MATIKAN WATCH NYA
+devServer: {
+    static: {
+      directory: path.join(__dirname, "src"),
+    },
+    compress: true,
+    port: 9000,
+    liveReload: true,
+  },
+
+43. jika ada gambar dan ingin dimasukan di html maka buat gambar di folder src/img dan instal
+	npm install --save-dev html-loader
+
+44. didalam webpack.config.js didalam rules tambahkan
+	{
+	        test: /\.html$/i,
+	        loader: "html-loader",
+	      },
+	      {
+	        test: /\.(png|jpe?g|gif|svg)$/i,
+	        type: "asset/resource",
+	      },
+
+45. dalam mode development didalam output tambahkan
+	assetModuleFilename: "img/[name][ext]",
+
+46. dan di dalam mode production didalam output tambahkan
+	assetModuleFilename: "img/[hash][ext]",
+
+47. jika ingin code splitting lakkan ini buat file nya . misal yang kita split itu bootstrapnya maka kita buat file nya format js cut yang ada di route.js pada bagian bootstrapnya pindah kan ke file baru tadi dan paste. setelah itu import di route js dengan
+	require("./vendor.js");
+
+48. lalu pergi ke webpack.config ubah di bagian entry nya
+entry: {
+    main: "./src/route.js",
+    vendor: "./src/vendor.js",
+  },
+
+49. lalu pergi ke mode developer ubah pada outputnya
+output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "[name].js",
+    assetModuleFilename: "img/[name][ext]",
+    clean: true,
+  },
+
+50.ubah di mode productionnya pada outputnya
+output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "[name].[contenthash].js",
+    assetModuleFilename: "img/[hash][ext]",
+    clean: true,
+  },
+
+51. sebagai contoh kita tambahkan library vanilla tilt.js
+	npm install vanilla-tilt --save
+
+52. tambahkan import tan nya di file vendor.js
+	import VanillaTilt from 'vanilla-tilt';
+
+53. lalu di file htmlnya yang di image/ <img src="ikon-tol.jpg" data-tilt/>
+	yang ditambahkan tu data-tilt
+
+54. seumpama kita punya dua arah file dan harus bundle nya di pisah dua file maka kita buat percontohan buat fole yang hanya menampilkan console.log saja dalam file hello.js
+
+55. instal library lodash
+	npm i --save lodash
+
+56. tambahkan import lodashnya yan membutuhkan
+	import _ from "lodash";
+
+57. set ke dalam skrip yang membutuhkan
+	contoh: console.log(_.toUpper("Hello, World!"));  _.toUpper() nya itu 
+
+58. eits jangan di build dulu .. tambahakan file hello.jsnya ke entry nya
+	entry: {
+    main: "./src/route.js",
+    vendor: "./src/vendor.js",
+    hello: "./src/hello.js",
+  },
+
+59. tapi problemnya file librarynya ke semua file. dan librarynya itu besar
+
+60. kita pergi kekonfignya di webpack.config.js kita ubah setingan di entry nya
+ entry: {
+    main: {
+      import: "./src/route.js",
+      dependOn: "shared",
+    },
+    vendor: "./src/vendor.js",
+    hello: {
+      import: "./src/hello.js",
+      dependOn: "shared",
+    },
+    shared: "lodash",
+  },
+
+lalu tambahkan juga SplitChunksPlugin di webpack config
+di module.export
+
+	optimization: {
+    splitChunks: {
+      chunks: "all",
+    },
+  },
+
+
+
+61. karna file kita terlalu esar kita instal plugin minimizer
+	npm install css-minimizer-webpack-plugin --save-dev
+
+62. setelah nstal kita ke mode production tambahakan di module.exports
+optimization: {
+    minimizer: [`...`, new CssMinimizerPlugin()],
+  },
+
+63. juga di mode development tambahakan di module.exports
+optimization: {
+    // [...]
+    minimize: true,
+  },
+
+64 OH IYA TAMBAHKAN JUGA VARIABELNYA DI MODE PRODUCTION DAN DEVELOPMENT
+	const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+
+65. bagi yang pakai bootstrap di webpack dan file itu besar mari kita kecilkan dengan purgecss
+	npm i purgecss-webpack-plugin -D
+
+66. kita ke mode production dan tambahkan 
+	const glob = require("glob");
+	const { PurgeCSSPlugin } = require("purgecss-webpack-plugin");
+
+const PATHS = {
+  src: path.join(__dirname, "src"),
+};
+
+67. lalu di mode production pada plugins: [] tambahkan
+	new PurgeCSSPlugin({
+      paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true }),
+    }),
+
