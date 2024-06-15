@@ -39,4 +39,12 @@ module.exports = merge(config, {
       paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true }),
     }),
   ],
+  devServer: {
+    static: {
+      directory: path.join(__dirname, "dist"),
+    },
+    compress: true,
+    port: 9000,
+    liveReload: true,
+  },
 });
